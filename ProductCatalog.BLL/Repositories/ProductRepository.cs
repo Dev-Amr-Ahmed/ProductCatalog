@@ -34,7 +34,7 @@ namespace ProductCatalog.DAL.Data.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await dbContext.Products.ToListAsync();
+            return await dbContext.Products.Include(p=>p.Category).ToListAsync();
         }
 
         public async Task<Product> GetByIdAsync(int id)

@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProductCatalog.DAL.Data;
+using ProductCatalog.DAL.Data.Interfaces;
+using ProductCatalog.DAL.Data.Repositories;
+using ProductCatalog.PL;
 using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +15,10 @@ builder.Services.AddDbContext<ProductDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProductsConnectionString"));
 });
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
 
@@ -40,6 +48,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

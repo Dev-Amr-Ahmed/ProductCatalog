@@ -16,18 +16,20 @@ namespace ProductCatalog.DAL.Data
                 var categories = new List<Category>(){
                     new Category()
                     {
-                        Id = 1,
                         Name = "Category 1"
                     },
                     new Category()
                     {
-                        Id = 2,
                         Name = "Category 2"
+                    },
+                    new Category()
+                    {
+                        Name = "Category 3"
                     },
                 };
 
-                dbContext.Categories.AddRange(categories);
-                dbContext.SaveChanges();
+                await dbContext.Categories.AddRangeAsync(categories);
+                await dbContext.SaveChangesAsync();
             }
         }
     }

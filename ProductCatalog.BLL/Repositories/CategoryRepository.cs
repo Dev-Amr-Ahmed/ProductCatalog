@@ -1,4 +1,5 @@
-﻿using ProductCatalog.DAL.Data.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using ProductCatalog.DAL.Data.Interfaces;
 using ProductCatalog.DAL.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -20,15 +21,14 @@ namespace ProductCatalog.DAL.Data.Repositories
         {
             await dbContext.Categories.AddAsync(category);
         }
-
-        public async Task AddAsync(List<Category> categories)
-        {
-            await dbContext.Categories.AddRangeAsync(categories);
-        }
-
         public void Delete(Category category)
         {
             dbContext.Categories.Remove(category);
+        }
+
+        public async Task<IEnumerable<Category>> GetAllAsync()
+        {
+            return await dbContext.Categories.ToListAsync();
         }
     }
 }

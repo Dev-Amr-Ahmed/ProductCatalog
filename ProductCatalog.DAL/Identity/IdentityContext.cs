@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProductCatalog.DAL.Identity
 {
-    public class IdentityContext : IdentityDbContext
+    public class IdentityContext //: IdentityDbContext
     {
     }
 }

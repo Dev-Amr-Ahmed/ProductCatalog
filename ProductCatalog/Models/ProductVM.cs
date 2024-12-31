@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using ProductCatalog.DAL.Data.Models;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
-namespace ProductCatalog.DAL.Data.Models
+namespace ProductCatalog.PL.Models
 {
-    public class Product
+    public class ProductVM
     {
         public int Id { get; set; }
 
@@ -16,12 +13,14 @@ namespace ProductCatalog.DAL.Data.Models
         public string Name { get; set; }
 
         [Required]
+        [DisplayName("Creation Date")]
         public DateTime CreationDate { get; set; }
 
         [Required]
         public string Creator { get; set; }
 
         [Required]
+        [DisplayName("Start Date")]
         public DateTime StartDate { get; set; }
 
         [Required]
@@ -33,6 +32,6 @@ namespace ProductCatalog.DAL.Data.Models
         public decimal Price { get; set; }
 
         [Required]
-        public virtual Category Category { get; set; }
+        public Category Category { get; set; }
     }
 }

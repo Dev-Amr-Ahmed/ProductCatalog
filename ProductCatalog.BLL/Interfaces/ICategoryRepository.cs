@@ -10,7 +10,7 @@ namespace ProductCatalog.DAL.Data.Interfaces
     public interface ICategoryRepository
     {
         Task AddAsync(Category category);
-        Task AddAsync(List<Category> categories);
+        Task<IEnumerable<Category>> GetAllAsync();
         void Delete(Category category);
     }
 }
