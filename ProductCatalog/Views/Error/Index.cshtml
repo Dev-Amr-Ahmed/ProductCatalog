@@ -1,0 +1,12 @@
+﻿@using ProductCatalog.PL.Models
+@model ErrorVM
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1>Error @Model.StatusCode</h1>
+@if(Model.Message is not null)
+{
+    <h3>@Model.Message</h3>
+}

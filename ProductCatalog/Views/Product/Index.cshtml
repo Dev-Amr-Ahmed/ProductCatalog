@@ -4,12 +4,16 @@
     ViewData["Title"] = "All Products";
 }
 
+
+
 <h3>@ViewData["Title"]</h3>
 
 <a class="btn btn-primary" asp-controller="Product" asp-action="Add">Add Product</a>
 @if (!Model.Any())
 {
-    <div class="alert-warning">No Products</div>
+    <div class="alert-warning text-center m-2">
+        <h3 class="p-5">No Products</h3>
+        </div>
 }
 else
 {
@@ -18,8 +22,11 @@ else
             <tr>
                 <th>@Html.DisplayNameFor(p=>p.Name)</th>
                 <th>@Html.DisplayNameFor(p=>p.Category)</th>
-                <th>@Html.DisplayNameFor(p=>p.CreationDate)</th>
+                <th>@Html.DisplayNameFor(p=>p.StartDate)</th>
                 <th>@Html.DisplayNameFor(p=>p.Duration)</th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -28,8 +35,12 @@ else
                 <tr>
                     <td>@product.Name</td>
                     <td>@product.Category.Name</td>
-                    <td>@product.CreationDate</td>
+                    <td>@product.StartDate</td>
                     <td>@product.Duration</td>
+                    <td><a class="btn btn-primary">Details</a></td>
+                    <td><a class="btn btn-primary">Edit</a></td>
+                    <td><a class="btn btn-primary">Delete</a></td>
+                    
                 </tr>
             }
         </tbody>

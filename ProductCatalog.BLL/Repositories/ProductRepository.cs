@@ -27,19 +27,26 @@ namespace ProductCatalog.DAL.Data.Repositories
             dbContext.Products.Remove(product);
         }
 
-        public Task<IEnumerable<Product>> GetActiveAsync()
+        public async Task<IEnumerable<Product>> GetActiveAsync()
         {
-            throw new NotImplementedException();
+            var now = DateTime.Now;
+            return await dbContext.Products.Where(p => p.EndDate > DateTime.Now).ToListAsync();
+            //return await dbContext.Products.Where(p => (p.StartDate.Add(TimeSpan.FromTicks(p.Duration))) > DateTime.Now).ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await dbContext.Products.Include(p=>p.Category).ToListAsync();
+            return await dbContext.Products.Include(p => p.Category).ToListAsync();
         }
 
         public async Task<Product> GetByIdAsync(int id)
         {
-            return await dbContext.Products.Where(p=>p.Id == id).FirstOrDefaultAsync();
+            return await dbContext.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await dbContext.SaveChangesAsync();
         }
 
         public void Update(Product product)

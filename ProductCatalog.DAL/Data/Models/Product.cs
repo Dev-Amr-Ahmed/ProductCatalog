@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ namespace ProductCatalog.DAL.Data.Models
         public DateTime StartDate { get; set; }
 
         [Required]
-        public TimeSpan Duration { get; set; }
+        public long Duration { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
@@ -34,5 +35,8 @@ namespace ProductCatalog.DAL.Data.Models
 
         [Required]
         public virtual Category Category { get; set; }
+
+        public DateTime EndDate {  get; set; }
+
     }
 }

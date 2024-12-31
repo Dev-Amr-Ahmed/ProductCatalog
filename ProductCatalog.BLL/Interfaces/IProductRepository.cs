@@ -13,7 +13,9 @@ namespace ProductCatalog.DAL.Data.Interfaces
         Task<IEnumerable<Product>> GetActiveAsync();
         Task<Product> GetByIdAsync(int id);
         Task AddAsync(Product product);
+        Task SaveChangesAsync();
         void Update(Product product);
         void Delete(Product product);
+
     }
 }

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.DAL.Data.Interfaces;
 using ProductCatalog.DAL.Data.Models;
+using ProductCatalog.Models;
 using ProductCatalog.PL.Models;
 
 namespace ProductCatalog.PL.Controllers
@@ -21,22 +23,46 @@ namespace ProductCatalog.PL.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Categories = await _categoryRepository.GetAllAsync();
-            var products = await _productRepository.GetAllAsync();
-            var productsVm = _mapper.Map<List<ProductVM>>(products);
+            IEnumerable<Product> products;
+
+            if (User.IsInRole("Admin"))
+            {
+                products = await _productRepository.GetAllAsync();
+            }
+            else
+            {
+                products = await _productRepository.GetActiveAsync(); 
+            }
+            
+            var productsVm = _mapper.Map<IEnumerable<ProductVM>>(products);
             return View(productsVm);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add()
         {
             ViewBag.Categories = await _categoryRepository.GetAllAsync();
             return View();
         }
 
-        public async Task<IActionResult> AddProduct([FromForm] ProductVM product)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddProduct([FromForm] ProductVM productVm)
         {
-            var products = await _productRepository.GetAllAsync();
-            var productsVM = _mapper.Map<List<ProductVM>>(products);
-            return View("Index", productsVM);
+            if (ModelState.IsValid)
+            {
+                var category = await _categoryRepository.FindAsync(productVm.CategoryId);
+                if (category is null)
+                {
+                    return RedirectToAction("Index", "Error", new ErrorVM { StatusCode = StatusCodes.Status400BadRequest, Message = "Bad Request"});
+                }
+                var product = _mapper.Map<Product>(productVm);
+                product.Category = category!;
+                await _productRepository.AddAsync(product);
+                await _productRepository.SaveChangesAsync();
+                return RedirectToAction("Index"); 
+            }
+            
+            return RedirectToAction("Index", "Error", new ErrorVM { StatusCode = StatusCodes.Status400BadRequest, Message = "Bad Request" });
         }
     }
 }

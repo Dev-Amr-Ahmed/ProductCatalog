@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using NuGet.Packaging.Signing;
+using System;
 
 namespace ProductCatalog.PL.Models
 {
@@ -23,8 +25,37 @@ namespace ProductCatalog.PL.Models
         [DisplayName("Start Date")]
         public DateTime StartDate { get; set; }
 
+        private TimeSpan _duration;
         [Required]
-        public TimeSpan Duration { get; set; }
+        public TimeSpan Duration
+        {
+            get
+            {
+                _duration = new TimeSpan(days: DurationDays, hours: DurationHours, 0, 0);
+                return _duration;
+            }
+            set
+            {
+                DurationHours = value.Hours;
+                DurationDays = value.Days;
+                _duration = value;
+            }
+        }
+
+        private int myVar;
+
+        public int MyProperty
+        {
+            get { return myVar; }
+            set { myVar = value; }
+        }
+
+
+        [Required]
+        public int DurationDays { get; set; }
+
+        [Required]
+        public int DurationHours { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
@@ -32,6 +63,8 @@ namespace ProductCatalog.PL.Models
         public decimal Price { get; set; }
 
         [Required]
-        public Category Category { get; set; }
+        public int CategoryId { get; set; }
+
+        public Category? Category { get; set; }
     }
 }

@@ -26,9 +26,21 @@ namespace ProductCatalog.DAL.Data.Repositories
             dbContext.Categories.Remove(category);
         }
 
+        public async Task<Category?> FindAsync(int id)
+        {
+            var category = await dbContext.Categories.FindAsync(id);
+            
+            return category;
+        }
+
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
             return await dbContext.Categories.ToListAsync();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await dbContext.SaveChangesAsync();
         }
     }
 }

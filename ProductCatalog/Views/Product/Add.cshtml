@@ -35,23 +35,22 @@
             <div class="row">
                 <label asp-for="Duration" class="col form-label fw-bold align-self-end"></label>
                 <div class="col">
-                    <label asp-for="Duration.Days" class="form-label fw-bold"></label>
-                    <input asp-for="Duration.Days" class="form-control" type="number" min=0 value=0 />
-                    <span asp-validation-for="Duration.Days" class="text-danger"></span>
+                    <label asp-for="DurationDays" class="form-label fw-bold"></label>
+                    <input asp-for="DurationDays" class="form-control" type="number" min=0 value=0 />
+                    <span asp-validation-for="DurationDays" class="text-danger"></span>
                 </div>
                 <div class="col">
-                    <label asp-for="Duration.Hours" class="form-label fw-bold"></label>
-                    <input asp-for="Duration.Hours" class="form-control" type="number" min=0 value=0 />
-                    <span asp-validation-for="Duration.Hours" class="text-danger"></span>
+                    <label asp-for="DurationHours" class="form-label fw-bold"></label>
+                    <input asp-for="DurationHours" class="form-control" type="number" min=0 value=0 />
+                    <span asp-validation-for="DurationHours" class="text-danger"></span>
                 </div>
             </div>
 
         </div>
 
-
         <div class="col-md-6">
-            <label asp-for="Category" class="form-label fw-bold"></label>
-            <select asp-for="Category" class="form-select">
+            <label asp-for="CategoryId" class="form-label fw-bold"></label>
+            <select asp-for="CategoryId" class="form-select">
                 <option value="">-- Select Category --</option>
                 @if (ViewBag.Categories is not null)
                 {
@@ -61,7 +60,7 @@
                     }
                 }
             </select>
-            <span asp-validation-for="Category" class="text-danger"></span>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
 
         <div class="col-12 text-center mt-4">
