@@ -9,8 +9,8 @@ namespace ProductCatalog.DAL.Data.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetAllAsync();
-        Task<IEnumerable<Product>> GetActiveAsync();
+        Task<IEnumerable<Product>> GetAllAsync(IEnumerable<string> filterCategories = null);
+        Task<IEnumerable<Product>> GetActiveAsync(IEnumerable<string> filterCategories = null);
         Task<Product> GetByIdAsync(int id);
         Task AddAsync(Product product);
         Task SaveChangesAsync();

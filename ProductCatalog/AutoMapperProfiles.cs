@@ -14,6 +14,8 @@ namespace ProductCatalog.PL
 
             CreateMap<Product, ProductVM>()
                 .ForMember(d => d.Duration, o => o.MapFrom(s => TimeSpan.FromTicks(s.Duration)));
+
+            CreateMap<Category, CategoryVM>();
         }
     }
 }

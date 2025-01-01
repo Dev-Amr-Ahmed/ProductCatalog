@@ -38,5 +38,8 @@ namespace ProductCatalog.DAL.Data.Models
 
         public DateTime EndDate {  get; set; }
 
+        [Required]
+        public bool IsDeleted { get; set; }
+
     }
 }

@@ -1,0 +1,60 @@
+﻿@using ProductCatalog.PL.Models
+@model ProductWithCategoriesVM
+
+@if(Model.product is not null)
+{
+    <input asp-for="product.Id" class="form-control" type="hidden" value="@Model.product.Id" />
+}
+<input asp-for="product.CreationDate" class="form-control" type="hidden" value="@DateTime.Now" />
+<input asp-for="product.Creator" class="form-control" type="hidden" value="@User.Identity.Name" />
+
+<div class="col-md-6">
+    <label asp-for="product.Name" class="form-label fw-bold"></label>
+    <input asp-for="product.Name" class="form-control" />
+    <span asp-validation-for="product.Name" class="text-danger"></span>
+</div>
+
+
+<div class="col-md-6">
+    <label asp-for="product.Price" class="form-label fw-bold"></label>
+    <input asp-for="product.Price" class="form-control" type="number" step="0.01" />
+    <span asp-validation-for="product.Price" class="text-danger"></span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="product.StartDate" class="form-label fw-bold"></label>
+    <input asp-for="product.StartDate" class="form-control" type="datetime-local" />
+    <span asp-validation-for="product.StartDate" class="text-danger"></span>
+</div>
+
+<div class="col-md-6">
+    <div class="row">
+        <label asp-for="product.Duration" class="col form-label fw-bold align-self-end"></label>
+        <div class="col">
+            <label asp-for="product.DurationDays" class="form-label fw-bold"></label>
+            <input asp-for="product.DurationDays" class="form-control" type="number" min=0 />
+            <span asp-validation-for="product.DurationDays" class="text-danger"></span>
+        </div>
+        <div class="col">
+            <label asp-for="product.DurationHours" class="form-label fw-bold"></label>
+            <input asp-for="product.DurationHours" class="form-control" type="number" min=0 />
+            <span asp-validation-for="product.DurationHours" class="text-danger"></span>
+        </div>
+    </div>
+
+</div>
+
+<div class="col-md-6">
+    <label asp-for="product.CategoryId" class="form-label fw-bold"></label>
+    <select asp-for="product.CategoryId" class="form-select">
+        <option value="">-- Select Category --</option>
+        @if (Model.categories is not null)
+        {
+            @foreach (var category in Model.categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        }
+    </select>
+    <span asp-validation-for="product.CategoryId" class="text-danger"></span>
+</div>

@@ -1,0 +1,16 @@
+﻿@using ProductCatalog.PL.Models
+@model List<CategoryVM>
+
+<form asp-action="Test">
+    <ul>
+        @foreach (var category in Model)
+        {
+            <li>
+                <input type="hidden" asp-for="@category.Id" />
+                <input asp-for="@category.IsSelected" type="checkbox" />
+                <label asp-for="@category.Name">@category.Name</label>
+            </li>
+        }
+    </ul>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>

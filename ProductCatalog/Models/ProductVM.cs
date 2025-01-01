@@ -42,15 +42,6 @@ namespace ProductCatalog.PL.Models
             }
         }
 
-        private int myVar;
-
-        public int MyProperty
-        {
-            get { return myVar; }
-            set { myVar = value; }
-        }
-
-
         [Required]
         public int DurationDays { get; set; }
 
@@ -66,5 +57,8 @@ namespace ProductCatalog.PL.Models
         public int CategoryId { get; set; }
 
         public Category? Category { get; set; }
+
+        [Required]
+        public bool IsDeleted { get; set; }
     }
 }

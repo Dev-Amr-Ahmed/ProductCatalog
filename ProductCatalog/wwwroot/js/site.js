@@ -1,4 +1,16 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).on('click', '#deleteProductButton', function () {
+    var productId = $(this).data('id');
+    $('.modal-body #productId').val(productId);
+});
 
-// Write your JavaScript code.
+$('#DeleteButton').on('click', function () {
+    var productId = $('.modal-body #productId').val();
+    $.ajax({
+        type: 'POST',
+        'url': '/Product/DeleteProduct',
+        data: { productId: productId },
+        success: function (data) {
+            window.location.reload;
+        }
+    });
+});

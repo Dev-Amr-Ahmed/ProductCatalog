@@ -1,0 +1,15 @@
+﻿@using ProductCatalog.PL.Models
+@model ProductWithCategoriesVM
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<h2>Edit Product</h2>
+<form asp-action="EditProduct">
+    <div class="row g-3">
+        <partial name="Partials/_ProductFormPartial" model="@Model" />
+        <div class="col-12 text-center mt-4">
+            <button type="submit" class="btn btn-primary px-5">Save</button>
+        </div>
+    </div>
+</form>

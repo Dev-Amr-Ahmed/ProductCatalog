@@ -1,0 +1,43 @@
+﻿@using ProductCatalog.PL.Models
+@model ProductVM
+@{
+}
+
+<h2>Product Details</h2>
+<div class="justify-content-between">
+    <a class="btn btn-primary" asp-action="Index"><i class="bi bi-arrow-90deg-left"></i> Back To All Products</a>
+    <div class="card my-2">
+        <div class="card-body">
+            <dl class="row">
+                <input asp-for="@Model.Id" type="hidden" />
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreationDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.CreationDate)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Creator)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Creator)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.StartDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.StartDate)</dd>
+
+                <dt class="col-sm-3">Duration</dt>
+                <dd class="col-sm-9">
+                    @Model.Duration.Days days, @Model.Duration.Hours hours
+                </dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Price)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Price)</dd>
+
+                <dt class="col-sm-3">Category</dt>
+                <dd class="col-sm-9">@(Model.Category?.Name)</dd>
+
+            </dl>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Edit" asp-route-productId="@Model.Id" class="btn btn-info">Edit</a>
+        </div>
+    </div>
+</div>
