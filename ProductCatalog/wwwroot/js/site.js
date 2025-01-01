@@ -10,7 +10,7 @@ $('#DeleteButton').on('click', function () {
         'url': '/Product/DeleteProduct',
         data: { productId: productId },
         success: function (data) {
-            window.location.reload;
+            window.location.reload();
         }
     });
 });

@@ -27,30 +27,30 @@ namespace ProductCatalog.DAL.Data.Repositories
             dbContext.Products.Remove(product);
         }
 
-        public async Task<IEnumerable<Product>> GetActiveAsync(IEnumerable<string> filterCategories = null)
+        public async Task<IEnumerable<Product>> GetActiveAsync(int filterCategory = 0)
         {
             var now = DateTime.Now;
-            if (filterCategories is null)
+            if (filterCategory == 0)
             {
                 return await dbContext.Products.Where(p => !p.IsDeleted && p.EndDate > DateTime.Now).ToListAsync();
 
             }
             else
             {
-                return await dbContext.Products.Where(p => !p.IsDeleted && p.EndDate > DateTime.Now && filterCategories.Contains(p.Category.Name)).ToListAsync();
+                return await dbContext.Products.Where(p => !p.IsDeleted && p.EndDate > DateTime.Now && p.Category.Id == filterCategory).ToListAsync();
             }
             //return await dbContext.Products.Where(p => (p.StartDate.Add(TimeSpan.FromTicks(p.Duration))) > DateTime.Now).ToListAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync(IEnumerable<string> filterCategories = null)
+        public async Task<IEnumerable<Product>> GetAllAsync(int filterCategory = 0)
         {
-            if (filterCategories is null)
+            if (filterCategory == 0)
             {
                 return await dbContext.Products.Where(p => !p.IsDeleted).Include(p => p.Category).ToListAsync();
             }
             else
             {
-                return await dbContext.Products.Where(p => !p.IsDeleted && filterCategories.Contains(p.Category.Name)).Include(p => p.Category).ToListAsync();
+                return await dbContext.Products.Where(p => !p.IsDeleted && p.Category.Id == filterCategory).Include(p => p.Category).ToListAsync();
             }
         }
 

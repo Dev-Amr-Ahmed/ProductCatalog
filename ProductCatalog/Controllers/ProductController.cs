@@ -20,48 +20,29 @@ namespace ProductCatalog.PL.Controllers
             _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
-        public async Task<IActionResult> Index([FromForm] ProductAndCategoriesListVM productAndCategoriesListVM)
+        public async Task<IActionResult> Index(int categoryId = 0)
         {
             var categoriesVm = _mapper.Map<List<CategoryVM>>(await _categoryRepository.GetAllAsync());
-            if(productAndCategoriesListVM.Products is null || productAndCategoriesListVM.Products is null)
+            if (categoryId != 0 && !categoriesVm.Any(x => x.Id == categoryId)) //Id Doesn't Exist
             {
-                ViewBag.Categories = await _categoryRepository.GetAllAsync();
-                IEnumerable<Product> products;
-                var categoryNames = categoriesVm.Where(x => x.IsSelected).Select(x => x.Name);
-                if (User.IsInRole("Admin"))
-                {
-                    products = await _productRepository.GetAllAsync();
-                }
-                else
-                {
-                    products = await _productRepository.GetActiveAsync();
-                }
-
-                var productsVm = _mapper.Map<List<ProductVM>>(products);
-                var productWithCategoriesList = new ProductAndCategoriesListVM { Products = productsVm, Categories = categoriesVm };
-                return View(productWithCategoriesList);
+                return RedirectToAction("Index", "Error", new ErrorVM { StatusCode = StatusCodes.Status400BadRequest, Message = "Bad Request" });
             }
-            if (productAndCategoriesListVM.Categories.Select(x => x.Id) == categoriesVm.Select(x => x.Id)) //The List wasn't modified
+
+            ViewBag.Categories = categoriesVm;
+            IEnumerable<Product> products;
+            if (User.IsInRole("Admin"))
             {
-                ViewBag.Categories = await _categoryRepository.GetAllAsync();
-                IEnumerable<Product> products;
-                var categoryNames = categoriesVm.Where(x=>x.IsSelected).Select(x => x.Name);
-                if (User.IsInRole("Admin"))
-                {
-                    products = await _productRepository.GetAllAsync(categoryNames);
-                }
-                else
-                {
-                    products = await _productRepository.GetActiveAsync(categoryNames);
-                }
-
-                var productsVm = _mapper.Map<List<ProductVM>>(products);
-
-
-                var productWithCategoriesList = new ProductAndCategoriesListVM { Products = productsVm, Categories = productAndCategoriesListVM.Categories };
-                return View(productWithCategoriesList);
+                products = await _productRepository.GetAllAsync(categoryId);
             }
-            return RedirectToAction("Index", "Error", new ErrorVM { StatusCode = StatusCodes.Status400BadRequest, Message = "Bad Request" });
+            else
+            {
+                products = await _productRepository.GetActiveAsync(categoryId);
+            }
+
+            var productsVm = _mapper.Map<List<ProductVM>>(products);
+            return View(productsVm);
+
+            //return RedirectToAction("Index", "Error", new ErrorVM { StatusCode = StatusCodes.Status400BadRequest, Message = "Bad Request" });
 
         }
 
@@ -130,7 +111,6 @@ namespace ProductCatalog.PL.Controllers
             return RedirectToAction("Index", "Error", new ErrorVM { StatusCode = StatusCodes.Status400BadRequest, Message = "Bad Request" });
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int productId)
         {
             var product = await _productRepository.GetByIdAsync(productId);

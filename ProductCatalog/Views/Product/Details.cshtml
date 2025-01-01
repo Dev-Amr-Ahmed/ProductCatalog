@@ -17,8 +17,11 @@
                 <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreationDate)</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.CreationDate)</dd>
 
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Creator)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Creator)</dd>
+                @if (User.IsInRole("Admin"))
+                {
+                    <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Creator)</dt>
+                    <dd class="col-sm-9">@Html.DisplayFor(model => model.Creator)</dd>
+                }
 
                 <dt class="col-sm-3">@Html.DisplayNameFor(model => model.StartDate)</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.StartDate)</dd>
@@ -36,8 +39,11 @@
 
             </dl>
         </div>
-        <div class="card-footer">
-            <a asp-action="Edit" asp-route-productId="@Model.Id" class="btn btn-info">Edit</a>
-        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="card-footer">
+                <a asp-action="Edit" asp-route-productId="@Model.Id" class="btn btn-info">Edit</a>
+            </div>
+        }
     </div>
 </div>

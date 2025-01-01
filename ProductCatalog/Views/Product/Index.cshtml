@@ -1,47 +1,75 @@
 ﻿@using ProductCatalog.PL.Models
-@model ProductAndCategoriesListVM
+@model List<ProductVM>
 @{
     ViewData["Title"] = "All Products";
+    List<SelectListItem> selectListItems = new List<SelectListItem>();
+    foreach (var category in ViewBag.Categories as List<CategoryVM>)
+    {
+        selectListItems.Add(new SelectListItem
+                {
+                    Text = category.Name,
+                    Value = category.Id.ToString()
+                });
+    }
 }
 
-<div class="row">
-    <h3>@ViewData["Title"]</h3>
-    <a class="btn btn-primary col-2" asp-controller="Product" asp-action="Add">Add Product</a>
-</div>
-@if (!Model.Products.Any())
-{
-    <div class="alert-warning text-center my-2 p-5 fs-2">
-        No Products
+<div class="container-fluid">
+    <div class="row">
+        <h3>@ViewData["Title"]</h3>
     </div>
-}
-else
-{
-    <div class="row my-2">
-        <div class="col alert alert-danger">
-            <partial name="Partials/test" model="@Model.Categories"/>
-        </div>
-        <div class="col" id="ProductsTable">
-            <partial name="Partials/_AllProductsTablePartial" model="@Model.Products" />
-        </div>
+    <div class="row">
+        <a class="btn btn-primary col-2" asp-controller="Product" asp-action="Add">Add Product</a>
+    </div>
 
-        <!-- Delete Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete product</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="row my-2">
+        <div class="col-2">
+            <form asp-action="Index">
+                @Html.DropDownList("categoryId", selectListItems, "All Categories", new { @class = "form-control" })
+                <button type="submit" class="btn btn-primary my-1">Filter</button>
+            </form>
+        </div>
+        <div class="col-10">
+            <div class="row">
+                @if (!Model.Any())
+                {
+                    <div class="alert alert-warning text-center p-5 fs-2">
+                        No Products
                     </div>
-                    <div class="modal-body">
-                        <input type="hidden" id="productId" value="" />
-                        <h4>Are you sure you want to delete this product?</h4>
+                }
+                else
+                {
+                    <div class="col" id="ProductsTable">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <partial name="Partials/_AllProductsTablePartial" model="@Model" />
+                        }
+                        else
+                        {
+                            <partial name="Partials/_AllProductsGuestTablePartial" model="@Model" />
+                        }
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" id="DeleteButton">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteModalLabel">Delete product</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="productId" value="" />
+                                    <h4>Are you sure you want to delete this product?</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" id="DeleteButton">Delete</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     </div>
-}
+</div>
